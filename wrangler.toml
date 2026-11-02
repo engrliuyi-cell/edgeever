@@ -1,5 +1,5 @@
 name = "edgeever"
-main = ". worker/index.js"
+main = ".wrangler/edgeever-worker/index.js"
 compatibility_date = "2026-06-26"
 workers_dev = true
 no_bundle = true
@@ -24,13 +24,13 @@ run_worker_first = ["/api/*", "/mcp", "/__scheduled", "/s/*", "/share/*"]
 [[d1_databases]]
 binding = "DB"
 database_name = "edgeever"
-database_id = "88696e19-8ead-4e48-8e60-a6d65c846334"
+database_id = "00000000-0000-0000-0000-000000000000"
 migrations_dir = "migrations"
 
 [[r2_buckets]]
-binding = "R2"
-bucket_name = "edgeever-attach"
-
+binding = "RESOURCES"
+bucket_name = "edgeever-resources"
+preview_bucket_name = "edgeever-resources-preview"
 
 [observability]
 enabled = true

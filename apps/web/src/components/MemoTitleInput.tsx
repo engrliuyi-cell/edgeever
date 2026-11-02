@@ -1,4 +1,4 @@
-import { forwardRef, useImperativeHandle, useLayoutEffect, useRef, useState, type ComponentPropsWithoutRef } from "react";
+import { useLayoutEffect, useRef, useState, type ComponentPropsWithoutRef } from "react";
 import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
@@ -11,7 +11,7 @@ type MemoTitleInputProps = {
   value: string;
 } & Omit<ComponentPropsWithoutRef<"input">, "onChange" | "value">;
 
-export const MemoTitleInput = forwardRef<HTMLInputElement, MemoTitleInputProps>(({
+export const MemoTitleInput = ({
   ariaLabel,
   className,
   onValueChange,
@@ -19,9 +19,8 @@ export const MemoTitleInput = forwardRef<HTMLInputElement, MemoTitleInputProps>(
   readOnly = false,
   value,
   ...props
-}, ref) => {
+}: MemoTitleInputProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
-  useImperativeHandle(ref, () => inputRef.current as HTMLInputElement);
   const [truncated, setTruncated] = useState(false);
   useLayoutEffect(() => {
     const input = inputRef.current;
@@ -67,6 +66,4 @@ export const MemoTitleInput = forwardRef<HTMLInputElement, MemoTitleInputProps>(
       </Tooltip>
     </TooltipProvider>
   );
-});
-
-MemoTitleInput.displayName = "MemoTitleInput";
+};

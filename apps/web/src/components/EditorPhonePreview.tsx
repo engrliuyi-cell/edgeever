@@ -7,7 +7,6 @@ import { useMermaidTheme } from "@/components/ThemeProvider";
 import { embedMermaidForPreview } from "@/lib/phone-preview-mermaid";
 import { Switch } from "@/components/ui/switch";
 import { preparePublishArticle } from "@/lib/wechat-copy";
-import { useNoteProseStylePreference } from "@/lib/note-prose-style-preference";
 import {
   readEditorPhonePreviewFollowPreference,
   writeEditorPhonePreviewFollowPreference,
@@ -67,8 +66,7 @@ const alignElement = (scroller: HTMLElement, target: HTMLElement, viewportTop: n
 export const EditorPhonePreview = ({ editor, title, noteProse, scrollContainer, className }: EditorPhonePreviewProps) => {
   const { t } = useTranslation();
   const { mermaidTheme } = useMermaidTheme();
-  const noteProseStyle = useNoteProseStylePreference();
-  const proseKey = `${noteProse.palette}:${noteProse.fontSize}:${noteProse.lineHeight}:${noteProse.customCss}:${noteProseStyle.headingStyle}:${noteProseStyle.quoteStyle}:${noteProseStyle.emphasisStyle}:${noteProseStyle.showMagazineCover}`;
+  const proseKey = `${noteProse.palette}:${noteProse.fontSize}:${noteProse.lineHeight}:${noteProse.customCss}`;
   const previewSyncGeneration = useRef(0);
   const [markup, setMarkup] = useState({ html: "", style: "" });
   const [follow, setFollow] = useState(readEditorPhonePreviewFollowPreference);
@@ -105,7 +103,7 @@ export const EditorPhonePreview = ({ editor, title, noteProse, scrollContainer, 
       editor.off("update", sync);
       editor.off("create", sync);
     };
-  }, [editor, mermaidTheme, noteProse, noteProseStyle, title]);
+  }, [editor, mermaidTheme, noteProse]);
 
   useEffect(() => {
     previewRef.current?.setAttribute("style", markup.style);
@@ -211,9 +209,7 @@ export const EditorPhonePreview = ({ editor, title, noteProse, scrollContainer, 
             <span className="edgeever-phone-device__lens" />
           </div>
           <div className="edgeever-phone-preview" ref={previewRef}>
-            {title?.trim() && !noteProseStyle.showMagazineCover ? (
-              <p className="edgeever-phone-shell-title">{title.trim()}</p>
-            ) : null}
+            {title?.trim() ? <p className="edgeever-phone-shell-title">{title.trim()}</p> : null}
             {markup.html ? (
               <div
                 key={proseKey}

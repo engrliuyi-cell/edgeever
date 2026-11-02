@@ -215,15 +215,9 @@ export const PublicSharePasswordForm = ({
     if (!password.trim() || unlockMutation.isPending) return;
     unlockMutation.mutate();
   };
-  // A link that expired while the form was open shows the expiry page instead.
-  const onUnlockedRef = useRef(onUnlocked);
-  onUnlockedRef.current = onUnlocked;
-  useEffect(() => {
-    if (isSharePasswordError(unlockMutation.error, "share_expired")) void onUnlockedRef.current();
-  }, [unlockMutation.error]);
   const errorKey = isSharePasswordError(unlockMutation.error, "share_unlock_rate_limited")
     ? "sharing.passwordRateLimited"
-    : unlockMutation.error && !isSharePasswordError(unlockMutation.error, "share_expired")
+    : unlockMutation.error
       ? "sharing.passwordInvalid"
       : null;
 
@@ -266,7 +260,6 @@ export const PublicSharePage = () => {
   });
   const share = shareQuery.data?.share;
   const passwordRequired = isSharePasswordError(shareQuery.error, "share_password_required");
-  const expired = isSharePasswordError(shareQuery.error, "share_expired");
 
   useEffect(() => {
     const previousTitle = document.title;
@@ -307,9 +300,9 @@ export const PublicSharePage = () => {
     return (
       <main className="flex min-h-[100dvh] items-center justify-center bg-slate-50 px-5">
         <section className="max-w-md rounded-2xl border border-slate-200 bg-card p-8 text-center shadow-sm">
-          {expired ? <Clock3 className="mx-auto h-9 w-9 text-slate-400" /> : <FileText className="mx-auto h-9 w-9 text-slate-400" />}
-          <h1 className="mt-4 text-xl font-semibold text-slate-900">{t(expired ? "sharing.publicExpired" : "sharing.publicUnavailable")}</h1>
-          <p className="mt-2 text-sm leading-6 text-slate-500">{t(expired ? "sharing.publicExpiredHint" : "sharing.publicUnavailableHint")}</p>
+          <FileText className="mx-auto h-9 w-9 text-slate-400" />
+          <h1 className="mt-4 text-xl font-semibold text-slate-900">{t("sharing.publicUnavailable")}</h1>
+          <p className="mt-2 text-sm leading-6 text-slate-500">{t("sharing.publicUnavailableHint")}</p>
         </section>
       </main>
     );

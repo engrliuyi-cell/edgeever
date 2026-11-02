@@ -451,9 +451,7 @@ export const MemoShareUpdateSchema = z.object({
   slug: z.string().trim().toLowerCase().refine(isValidMemoShareSlug).nullable().optional(),
   showUpdatedAt: z.boolean().optional(),
   showBranding: z.boolean().optional(),
-  /** ISO instant with an offset, or null to remove the expiry. The server rejects past instants. */
-  expiresAt: z.string().datetime({ offset: true }).nullable().optional(),
-}).refine((input) => input.passwordProtected !== undefined || input.password !== undefined || input.slug !== undefined || input.showUpdatedAt !== undefined || input.showBranding !== undefined || input.expiresAt !== undefined, {
+}).refine((input) => input.passwordProtected !== undefined || input.password !== undefined || input.slug !== undefined || input.showUpdatedAt !== undefined || input.showBranding !== undefined, {
   message: "At least one field is required.",
 });
 export const NotebookShareUpdateSchema = SharePasswordUpdateSchema;

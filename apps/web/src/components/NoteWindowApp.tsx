@@ -73,7 +73,7 @@ export const NoteWindowApp = ({ memoId }: { memoId: string }) => {
   const [shortcutSettings] = useState(readShortcutSettingsPreference);
   const [imageCompressionEnabled] = useState(readImageCompressionPreference);
   const [focusMode, setFocusMode] = useState(false);
-  const [tokens, setTokens] = useState({ search: 0, replace: 0, ai: 0, saveAndSync: 0, readingProtection: 0, editorMode: 0, outline: 0, title: 0, body: 0 });
+  const [tokens, setTokens] = useState({ search: 0, replace: 0, ai: 0, saveAndSync: 0, readingProtection: 0, editorMode: 0, outline: 0 });
   const [closeError, setCloseError] = useState(false);
   const pendingSaveRef = useRef<(() => Promise<boolean>) | null>(null);
   const closeFailedRef = useRef(false);
@@ -141,9 +141,7 @@ export const NoteWindowApp = ({ memoId }: { memoId: string }) => {
               : action === "toggleReadingProtection" ? "readingProtection"
                 : action === "toggleEditorMode" ? "editorMode"
                   : action === "toggleOutline" ? "outline"
-                    : action === "focusTitle" ? "title"
-                      : action === "focusBody" ? "body"
-                        : null;
+                    : null;
       if (!key) return;
       event.preventDefault();
       setTokens((current) => ({ ...current, [key]: current[key] + 1 }));
@@ -218,8 +216,6 @@ export const NoteWindowApp = ({ memoId }: { memoId: string }) => {
             readingProtectionToggleToken={tokens.readingProtection}
             editorModeToggleToken={tokens.editorMode}
             outlineToggleToken={tokens.outline}
-            titleFocusToken={tokens.title}
-            bodyFocusToken={tokens.body}
             onSyncRequested={async () => bridge?.notifyNoteWindowSaved?.()}
             onOpenMemo={openInMainWindow}
             onOpenCompanionNote={openInMainWindow}
